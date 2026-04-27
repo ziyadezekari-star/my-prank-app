@@ -5,16 +5,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Buildozer
+        run: |
+          pip install buildozer
+          pip install cython==0.29.33
 
       - name: Build with Buildozer
-        uses: ArtemSerebrennkov/buildozer-action@v1
-        with:
-          buildozer_version: stable
-          python_version: 3.8
+        run: |
+          yes | buildozer android debug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Ziyad-APK-Result
           path: bin/*.apk
